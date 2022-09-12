@@ -1,9 +1,12 @@
 const logger = require('../config/logger');
-const redisPubSub = require('../redis/index');
+const redisService = require('../redis/index');
+const { questionService } = require('../services');
 
-const publishQuiz = () => {
+const publishQuiz = async () => {
   logger.info("I'm executed on a schedule!");
-  redisPubSub.publishToTopic('quizSession', { id: 1, question: 'What is 1 + 1?' });
+  const newQuestion = await questionService.getRandomQuestion();
+  await redisService.handleSetRedis('currentQuestion', newQuestion[0]);
+  await redisService.publishToTopic('quizSession', newQuestion[0]);
   logger.info('pub sub ran');
 };
 
