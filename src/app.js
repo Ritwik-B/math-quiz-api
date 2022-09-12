@@ -13,7 +13,7 @@ const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
-const scheduledFunctions = require('./cron/quiz');
+const scheduledTimers = require('./timer/quiz');
 
 const app = express();
 
@@ -54,7 +54,7 @@ if (config.env === 'production') {
 // v1 api routes
 app.use('/v1', routes);
 
-scheduledFunctions.initScheduledJobs();
+scheduledTimers.initQuizTimer();
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
