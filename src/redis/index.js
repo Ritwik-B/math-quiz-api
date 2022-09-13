@@ -12,7 +12,10 @@ const publishToTopic = (topic, payload) => {
 
 const handleSetRedis = async (key, value) => client.set(key, JSON.stringify(value));
 
+const handleGetRedis = async (key) => client.get(key);
+
 module.exports = {
   publishToTopic,
   handleSetRedis,
+  handleGetRedis,
 };
